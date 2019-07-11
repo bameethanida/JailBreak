@@ -12,36 +12,77 @@
     <title>JAILBREAK</title>
 </head>
 <body>
-    <h1>Welcome to JAILBREAK Control System</h1>
-    <div class="title">
-
-    </div>
-
+    <center><div>
+            <img src="jailpic.png" style="width: 200px ; margin-top: 1%">
+            <p id='title'>Welcome to JAILBREAK Control System</p>
+        </div></center>
+    
     <div class="control-section">
-        
+    <div class = 'row'>
+        <div class = 'col-6' style="padding-left: 10% ">
+            <div class = 'row'>
+                    <div class="card">
+                            <div class="card-body" style="width: 300px">
+                                    <div class="container">
+                                        <div class='row'>
+                                            <div class = 'col-6'>
+                                                <img src="door.png" style="width: 80% ">
+                                            </div>
+                                            <div class = 'col-6'>
+                                                <p>Door</p>
+                                                <span class="switch">
+                                                    <input type="checkbox" class="switch" id="switch-id1" onclick="putDoor()">
+                                                    <label for="switch-id1"></label>
+                                                </span>
+                                                </div>
+                                            </div>
+                                            </div>       
+                            </div>
+                          </div>
+            </div>
+            <div class = 'row'>
+                    <div class="card" style="margin-top: 3%; margin-bottom: 3% ">
+                    <div class="card-body" style="width: 300px">
+                            <div class="container">
+                                    <div class='row'>
+                                            <div class = 'col-6'>
+                                                <img src="bulb.png" style="width: 100% ">
+                                            </div>
+                                            <div class = 'col-6'>
+                                                    <p>Light</p>
+                                                    <span class="switch">
+                                                        <input type="checkbox" class="switch" id="switch-id2" onclick="putLED()">
+                                                        <label for="switch-id2"></label>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                </div>
+                    </div>
+                  </div></div>
+            <div class = 'row'>
+                    <div class="card">
+                            <div class="card-body" style="width: 300px">
+                                    <div class="container">
+                                        <div class='row'>
+                                            <div class = 'col-6'>
+                                                <img src="buzzer.png" style="width: 100% ">
+                                            </div>
+                                            <div class = 'col-6'>
+                                                    <p>Buzzer</p>
+                                                <span class="switch"> 
+                                                <input type="checkbox" class="switch" id="switch-id3" onclick="putBuzzer()">
+                                                <label for="switch-id3"></label>
+                                            </span> 
+                                                </div>
+                                            </div>
+                                        </div>
+                            </div>
+                          </div>
+            </div>
+        </div>
+        <div class = 'col-6'></div>
     </div>
-
-    <div class="container">
-        <p>Door</p>
-        <span class="switch">
-            <input type="checkbox" class="switch" id="switch-id1">
-            <label for="switch-id1"></label>
-        </span>
-    </div>
-    <div class="container">
-        <p>Light</p>
-        <span class="switch">
-            <input type="checkbox" class="switch" id="switch-id2">
-            <label for="switch-id2"></label>
-        </span>
-    </div>
-    <div class="container">
-        <p>Buzzer</p>
-        <span class="switch">
-            <input type="checkbox" class="switch" id="switch-id3">
-            <label for="switch-id3"></label>
-        </span>
-    </div>
+  
 
     <!-- JS -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>

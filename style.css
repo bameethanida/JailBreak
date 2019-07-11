@@ -1,14 +1,23 @@
 * {
     font-weight: bold;
-    font-size: 130%;
+    font-size: 105%;
+    font-family: 'Courier New', Courier, monospace;
     
 
 }
-h1{
+#title{
     text-align: center;
     font-weight: bold;
-    font-family: product sans;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 200%;
+    background-color: lightgrey;
+    width: 1200px;
+    border: 10px solid gray;
+    padding: 20px;
+    margin: 20px;
+
 }
+
 body {
     background: linear-gradient(-90deg, #2c3e50 0%, #bdc3c7 100%);
 }
