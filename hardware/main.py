@@ -28,3 +28,13 @@ def WIFIConnect():
         while not wlan.isconnected():
             pass
         print('connected')
+
+def servo_spin(GATESTATUS)
+  global GATESTATUS
+  SERVO_PIN = 32
+  if (GATESTATUS):
+    servo1 = pyb.Servo(1)
+    #SERVO=Pin(LED_PIN,Pin.IN)
+    #SERVO.value()
+    #servo1.angle(angle from -90 to 90,time(milli.sec) for move)
+    servo1.angle(50, 1000)
