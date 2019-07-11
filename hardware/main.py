@@ -3,7 +3,6 @@ from time import sleep
 import json
 import urequests as requests
 from _thread import start_new_thread as thread
-import pyb
 
 GATESTATUS = False
 DOORAPI = "https://exceed.superposition.pknn.dev/data/:5"
@@ -15,7 +14,7 @@ def escape_check():
     while(True):
         global alert
         pin_lazer.value(1)
-        print(pin_ldr.read())
+        #print(pin_ldr.read())
         sleep(0.01)
 
 
@@ -67,7 +66,7 @@ def WIFIConnect():
         print('connected')
 
 
-def servo_spin(GATESTATUS):
+def servo_spin():
     global GATESTATUS
     SERVO_PIN = 32
     if (GATESTATUS):
@@ -78,28 +77,18 @@ def servo_spin(GATESTATUS):
         servo1.angle(50, 1000)
 
 
-def servo_spin_test(GATESTATUS):
-    global GATESTATUS
-    SERVO_PIN = 32
-    if (GATESTATUS):
-        servo = PWM(Pin(22), freq=50, duty=77)
-        servo.duty(30)
-        sleep(0.5)
-        servo.deinit()
-        print('rolling in the deep')
-
-
 def serverMon():
     global GATESTATUS
     while True:
         r = requests.get(DOORAPI)
         json = r.json()
-        GATESTATUS = json['gate_status']
+        GATESTATUS = json.gate_status
         sleep(2)
 
 
-thread(WIFIConnect, None)
-thread(btnMon, None)
-thread(serverMon, None)
-thread(escape_check, None)
-thread(alert_mode, None)
+thread(WIFIConnect, [])
+thread(btnMon, [])
+thread(serverMon, [])
+#thread(escape_check, [])
+#thread(alert_mode, [])
+
