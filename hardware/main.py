@@ -15,9 +15,9 @@ laser = Pin(25, Pin.OUT)
 ldr = ADC(Pin(33))
 buzzer = Pin(26, Pin.OUT)
 led = [
-        Pin(18, Pin.OUT),
-        Pin(19, Pin.OUT),
-        Pin(21, Pin.OUT),
+    Pin(18, Pin.OUT),
+    Pin(19, Pin.OUT),
+    Pin(21, Pin.OUT),
 ]
 
 
@@ -113,7 +113,7 @@ def serverMon():
 
 
 def lightMon():
-    global led, ldr, laser
+    global led
     while True:
         if (AUTOLIGHTSTATUS or LIGHTSTATUS) and not ALERTSTATUS:
             led[0].value(1)
@@ -126,9 +126,22 @@ def lightMon():
         sleep(0.1)
 
 
+def doorMon():
+    global GATESTATUS
+    SERVO_PIN = 32
+    servo = PWM(Pin(SERVO_PIN), freq=50, duty=30)
+    while True:
+        if GATESTATUS:
+            servo.duty(77)
+        else:
+            servo.duty(30)
+        sleep(0.1)
+
+
 thread(WIFIConnect, [])
 thread(btnMon, [])
 thread(serverMon, [])
 thread(lightMon, [])
+thread(doorMon, [])
 thread(escape_check, [])
 thread(alert_mode, [])
