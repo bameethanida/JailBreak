@@ -5,41 +5,54 @@ import urequests as requests
 from _thread import start_new_thread as thread
 
 GATESTATUS = False
-DOORAPI = "https://exceed.superposition.pknn.dev/data/5"
+API = "https://exceed.superposition.pknn.dev/data/5"
 WIFISTATUS = False
 ALERTSTATUS = False
+LIGHTSTATUS = False
+AUTOLIGHTSTATUS = False
+
+laser = Pin(25, Pin.OUT)
+ldr = ADC(Pin(33))
+buzzer = Pin(26, Pin.OUT)
+led = [
+        Pin(18, Pin.OUT),
+        Pin(19, Pin.OUT),
+        Pin(21, Pin.OUT),
+]
 
 
 def escape_check():
-    global ALERTSTATUS
-    pin_lazer = Pin(25,Pin.OUT)
-    pin_ldr = ADC(Pin(33))
+    global ALERTSTATUS, AUTOLIGHTSTATUS, laser, ldr
+    laser.value(1)
     while(True):
-        pin_lazer.value(1)
-        if (pin_ldr.read() >= 2500):
+        if (ldr.read() >= 2500):
             ALERTSTATUS = True
+        laser.value(1)
+        if (ldr.read() >= 2500):
+            AUTOLIGHTSTATUS = True
+        laser.value(0)
         sleep(0.01)
 
 
 def alert_mode():
-    global ALERTSTATUS, GATESTATUS
-    pin_buzzer = Pin(26, Pin.OUT)
-    pin_led = Pin(18, Pin.OUT)
-    pin_led.value(0)
+    global ALERTSTATUS, GATESTATUS, led
+    led = Pin(18, Pin.OUT)
     while(True):
         if ALERTSTATUS:
-            GATESTATUS = True
-            pin_buzzer.value(1)
-            pin_led.value(1)
+            led[1].value(0)
+            led[2].value(0)
+            GATESTATUS = False
+            buzzer.value(1)
+            led[0].value(1)
             sleep(0.5)
-            pin_buzzer.value(0)
-            pin_led.value(0)
+            buzzer.value(0)
+            led[0].value(0)
             sleep(0.5)
         sleep(0.01)
 
 
 def btnMon():
-    global GATESTATUS, WIFISTATUS
+    global GATESTATUS, WIFISTATUS, API
     p_mon = Pin(34, Pin.IN)
     btnstatus = False
     while True:
@@ -47,7 +60,7 @@ def btnMon():
             if not btnstatus:
                 GATESTATUS = not GATESTATUS
                 if WIFISTATUS:
-                    r = requests.get(DOORAPI)
+                    r = requests.get(API)
                     json_data = r.json()
                     data = json.dumps({
                         'door': GATESTATUS,
@@ -55,7 +68,7 @@ def btnMon():
                         'LED': json_data.LED
                     })
                     headers = {'Content-type': 'application/json'}
-                    requests.post(DOORAPI, data=data, headers=headers)
+                    requests.post(API, data=data, headers=headers)
             btnstatus = True
         else:
             btnstatus = False
@@ -89,32 +102,33 @@ def servo_spin_test():
 
 
 def serverMon():
-    global GATESTATUS
+    global GATESTATUS, ALERTSTATUS, LIGHTSTATUS, API
     while True:
-        r = requests.get(DOORAPI)
+        r = requests.get(API)
         json = r.json()
         GATESTATUS = json['door']
+        ALERTSTATUS = json['buzzer']
+        LIGHTSTATUS = json['LED']
         sleep(2)
 
 
 def lightMon():
     global led, ldr, laser
     while True:
-        laser.value(0)
-        if ldr.read() < 1000:
+        if (AUTOLIGHTSTATUS or LIGHTSTATUS) and not ALERTSTATUS:
             led[0].value(1)
             led[1].value(1)
             led[2].value(1)
-        else:
+        elif not LIGHTSTATUS and not AUTOLIGHTSTATUS and not ALERTSTATUS:
             led[0].value(0)
             led[1].value(0)
             led[2].value(0)
-        laser.value(1)
         sleep(0.1)
 
 
 thread(WIFIConnect, [])
 thread(btnMon, [])
 thread(serverMon, [])
+thread(lightMon, [])
 thread(escape_check, [])
 thread(alert_mode, [])
