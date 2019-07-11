@@ -98,6 +98,6 @@ def serverMon():
 
 thread(WIFIConnect, [])
 thread(btnMon, [])
-thread(serverMon, [])
+#thread(serverMon, [])
 thread(escape_check, [])
 thread(alert_mode, [])
