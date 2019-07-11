@@ -41,8 +41,12 @@ def btnMon():
             if not btnstatus:
                 GATESTATUS = not GATESTATUS
                 if WIFISTATUS:
+                    r = requests.get(DOORAPI)
+                    json_data = r.json()
                     data = json.dumps({
-                        'gate_status': GATESTATUS
+                        'door': GATESTATUS,
+                        'buzzer': json_data.buzzer,
+                        'LED': json_data.LED
                     })
                     headers = {'Content-type': 'application/json'}
                     requests.post(DOORAPI, data=data, headers=headers)
@@ -93,8 +97,8 @@ def serverMon():
     global GATESTATUS
     while True:
         r = requests.get(DOORAPI)
-        json = r.json()
-        GATESTATUS = json['gate_status']
+        json_data = r.json()
+        GATESTATUS = json_data['gate_status']
         sleep(2)
 
 
