@@ -1,8 +1,10 @@
 from machine import Pin, PWM, ADC
 from time import sleep
+import urequests as requests
 
 GATESTATUS = False
-
+DOORAPI = "https://abc.def/efg/door"
+WIFISTATUS = False
 
 def btnMon():
     global GATESTATUS
@@ -19,15 +21,19 @@ def btnMon():
 
 
 def WIFIConnect():
+    global WIFISTATUS
     import network
     wlan = network.WLAN(network.STA_IF)
     wlan.active(True)
     while not wlan.isconnected():
+        WIFISTATUS = False
         print('connecting...')
         wlan.connect('exceed16_8', '12345678')
         while not wlan.isconnected():
             pass
+        WIFISTATUS = True
         print('connected')
+
 
 def servo_spin(GATESTATUS)
   global GATESTATUS
@@ -38,3 +44,12 @@ def servo_spin(GATESTATUS)
     #SERVO.value()
     #servo1.angle(angle from -90 to 90,time(milli.sec) for move)
     servo1.angle(50, 1000)
+
+
+def serverMon():
+    global GATESTATUS
+    while True:
+        r = requests.get(DOORAPI)
+        json = r.json()
+        GATESTATUS = json.status
+        sleep(0.0001)
