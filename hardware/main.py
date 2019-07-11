@@ -1,6 +1,7 @@
 from machine import Pin, PWM, ADC
 from time import sleep
 import urequests as requests
+import pyb
 
 GATESTATUS = False
 DOORAPI = "https://abc.def/efg/door"
@@ -35,8 +36,7 @@ def WIFIConnect():
         print('connected')
 
 
-def servo_spin(GATESTATUS)
-  global GATESTATUS
+def servo_spin(GATESTATUS):
   SERVO_PIN = 32
   if (GATESTATUS):
     servo1 = pyb.Servo(1)
@@ -45,8 +45,7 @@ def servo_spin(GATESTATUS)
     #servo1.angle(angle from -90 to 90,time(milli.sec) for move)
     servo1.angle(50, 1000)
 
-def servo_spin_test(GATESTATUS)
-  global GATESTATUS
+def servo_spin_test(GATESTATUS):
   SERVO_PIN = 32
   if (GATESTATUS):
     servo = PWM(Pin(22),freq=50,duty=77)
@@ -54,7 +53,7 @@ def servo_spin_test(GATESTATUS)
     sleep(0.5)
     servo.deinit()
     print('rolling in the deep')
-else:
+  else:
     pass
 
 
