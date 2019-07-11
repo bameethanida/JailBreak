@@ -45,6 +45,18 @@ def servo_spin(GATESTATUS)
     #servo1.angle(angle from -90 to 90,time(milli.sec) for move)
     servo1.angle(50, 1000)
 
+def servo_spin_test(GATESTATUS)
+  global GATESTATUS
+  SERVO_PIN = 32
+  if (GATESTATUS):
+    servo = PWM(Pin(22),freq=50,duty=77)
+    servo.duty(30)
+    sleep(0.5)
+    servo.deinit()
+    print('rolling in the deep')
+else:
+    pass
+
 
 def serverMon():
     global GATESTATUS
