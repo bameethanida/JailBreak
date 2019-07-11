@@ -1,10 +1,33 @@
 from machine import Pin, PWM, ADC
 from time import sleep
 import urequests as requests
+from _thread import start_new_thread as thread
 
 GATESTATUS = False
 DOORAPI = "https://abc.def/efg/door"
 WIFISTATUS = False
+ALERTSTATUS = False
+
+def escape_check():
+  while(True):
+    global alert
+    pin_lazer.value(1)  
+    print(pin_ldr.read())
+    sleep(0.01)
+
+
+def alert_mode(alert):
+  while(True):
+    if(alert == True):
+      pin_buzzer.value(1)
+      pin_led.value(1)
+      sleep(0.5)
+      pin_buzzer.value(0)
+      pin_led.value(0)
+      sleep(0.5)
+  sleep(0.01)
+
+
 
 def btnMon():
     global GATESTATUS
@@ -35,7 +58,7 @@ def WIFIConnect():
         print('connected')
 
 
-def servo_spin(GATESTATUS)
+def servo_spin(GATESTATUS):
   global GATESTATUS
   SERVO_PIN = 32
   if (GATESTATUS):
@@ -45,17 +68,18 @@ def servo_spin(GATESTATUS)
     #servo1.angle(angle from -90 to 90,time(milli.sec) for move)
     servo1.angle(50, 1000)
 
-def servo_spin_test(GATESTATUS)
-  global GATESTATUS
-  SERVO_PIN = 32
-  if (GATESTATUS):
-    servo = PWM(Pin(22),freq=50,duty=77)
-    servo.duty(30)
-    sleep(0.5)
-    servo.deinit()
-    print('rolling in the deep')
-else:
-    pass
+
+def servo_spin_test(GATESTATUS):
+    global GATESTATUS
+    SERVO_PIN = 32
+    if (GATESTATUS):
+        servo = PWM(Pin(22),freq=50,duty=77)
+        servo.duty(30)
+        sleep(0.5)
+        servo.deinit()
+        print('rolling in the deep')
+    else:
+        pass
 
 
 def serverMon():
@@ -65,3 +89,7 @@ def serverMon():
         json = r.json()
         GATESTATUS = json.status
         sleep(0.0001)
+
+
+thread(escape_check())
+thread(alert_mode(alert))
