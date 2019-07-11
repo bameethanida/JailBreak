@@ -5,7 +5,7 @@ import urequests as requests
 from _thread import start_new_thread as thread
 
 GATESTATUS = False
-DOORAPI = "https://exceed.superposition.pknn.dev/data/:5"
+DOORAPI = "https://exceed.superposition.pknn.dev/data/5"
 WIFISTATUS = False
 ALERTSTATUS = False
 
@@ -16,7 +16,7 @@ def escape_check():
     while(True):
         pin_lazer.value(1)
         if (pin_ldr.read() >= 2500):
-                ALERTSTATUS = True
+            ALERTSTATUS = True
         sleep(0.01)
 
 
@@ -76,14 +76,14 @@ def WIFIConnect():
 
 
 def servo_spin_test():
-  global GATESTATUS
-  SERVO_PIN = 32
-  if (GATESTATUS):
-    servo = PWM(Pin(22),freq=50,duty=77)
-    servo.duty(30)
-    sleep(0.5)
-    servo.deinit()
-    print('rolling in the deep')
+    global GATESTATUS
+    SERVO_PIN = 32
+    if (GATESTATUS):
+        servo = PWM(Pin(SERVO_PIN), freq=50, duty=77)
+        servo.duty(30)
+        sleep(0.5)
+        servo.deinit()
+        print('rolling in the deep')
 
 
 def serverMon():
@@ -93,6 +93,22 @@ def serverMon():
         json = r.json()
         GATESTATUS = json['door']
         sleep(2)
+
+
+def lightMon():
+    global led, ldr, laser
+    while True:
+        laser.value(0)
+        if ldr.read() < 1000:
+            led[0].value(1)
+            led[1].value(1)
+            led[2].value(1)
+        else:
+            led[0].value(0)
+            led[1].value(0)
+            led[2].value(0)
+        laser.value(1)
+        sleep(0.1)
 
 
 thread(WIFIConnect, [])
