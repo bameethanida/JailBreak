@@ -16,3 +16,15 @@ def btnMon():
         else:
             btnstatus = False
         sleep(0.0001)
+
+
+def WIFIConnect():
+    import network
+    wlan = network.WLAN(network.STA_IF)
+    wlan.active(True)
+    while not wlan.isconnected():
+        print('connecting...')
+        wlan.connect('exceed16_8', '12345678')
+        while not wlan.isconnected():
+            pass
+        print('connected')
