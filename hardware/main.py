@@ -11,17 +11,22 @@ ALERTSTATUS = False
 
 
 def escape_check():
+    global ALERTSTATUS
+    pin_lazer = Pin(25)
     while(True):
-        global alert
         pin_lazer.value(1)
-        #print(pin_ldr.read())
+        if (pin_ldr.read() >= 2500):
+                ALERTSTATUS = True
         sleep(0.01)
 
 
 def alert_mode():
-    global alert
+    global ALERTSTATUS, GATESTATUS
+    pin_buzzer = Pin(26, Pin.OUT)
+    pin_led = Pin(21, Pin.OUT)
     while(True):
-        if alert:
+        if ALERTSTATUS:
+            GATESTATUS = True
             pin_buzzer.value(1)
             pin_led.value(1)
             sleep(0.5)
@@ -66,15 +71,15 @@ def WIFIConnect():
         print('connected')
 
 
-def servo_spin():
-    global GATESTATUS
-    SERVO_PIN = 32
-    if (GATESTATUS):
-        servo1 = pyb.Servo(1)
-        # SERVO=Pin(LED_PIN,Pin.IN)
-        # SERVO.value()
-        # servo1.angle(angle from -90 to 90,time(milli.sec) for move)
-        servo1.angle(50, 1000)
+def servo_spin_test():
+  global GATESTATUS
+  SERVO_PIN = 32
+  if (GATESTATUS):
+    servo = PWM(Pin(22),freq=50,duty=77)
+    servo.duty(30)
+    sleep(0.5)
+    servo.deinit()
+    print('rolling in the deep')
 
 
 def serverMon():
@@ -91,4 +96,3 @@ thread(btnMon, [])
 thread(serverMon, [])
 #thread(escape_check, [])
 #thread(alert_mode, [])
-
