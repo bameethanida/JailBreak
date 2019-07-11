@@ -1,19 +1,26 @@
 from machine import Pin, PWM, ADC
 from time import sleep
+import json
 import urequests as requests
 
 GATESTATUS = False
-DOORAPI = "https://abc.def/efg/door"
+DOORAPI = "https://exceed.superposition.pknn.dev/data/:5"
 WIFISTATUS = False
 
 def btnMon():
-    global GATESTATUS
+    global GATESTATUS, WIFISTATUS
     p_mon = Pin(34, Pin.IN)
     btnstatus = False
     while True:
         if p_mon.value() == 0:  # BTN-Down
             if not btnstatus:
                 GATESTATUS = not GATESTATUS
+                if WIFISTATUS:
+                    data = json.dumps({
+                        'gate_status': GATESTATUS
+                    })
+                    headers = {'Content-type': 'application/json'}
+                    r = requests.post(DOORAPI, data=data, headers=headers)
             btnstatus = True
         else:
             btnstatus = False
@@ -51,5 +58,5 @@ def serverMon():
     while True:
         r = requests.get(DOORAPI)
         json = r.json()
-        GATESTATUS = json.status
-        sleep(0.0001)
+        GATESTATUS = json['gate_status']
+        sleep(2)
