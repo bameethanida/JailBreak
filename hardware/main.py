@@ -12,7 +12,7 @@ ALERTSTATUS = False
 
 def escape_check():
     global ALERTSTATUS
-    pin_lazer = Pin(25)
+    pin_lazer = Pin(25,Pin.OUT)
     pin_ldr = ADC(Pin(33))
     while(True):
         pin_lazer.value(1)
@@ -24,7 +24,8 @@ def escape_check():
 def alert_mode():
     global ALERTSTATUS, GATESTATUS
     pin_buzzer = Pin(26, Pin.OUT)
-    pin_led = Pin(21, Pin.OUT)
+    pin_led = Pin(18, Pin.OUT)
+    pin_led.value(0)
     while(True):
         if ALERTSTATUS:
             GATESTATUS = True
@@ -96,8 +97,8 @@ def serverMon():
         sleep(2)
 
 
-thread(WIFIConnect, [])
-thread(btnMon, [])
+#thread(WIFIConnect, [])
+#thread(btnMon, [])
 #thread(serverMon, [])
 thread(escape_check, [])
 thread(alert_mode, [])
