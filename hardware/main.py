@@ -98,5 +98,8 @@ def serverMon():
         sleep(2)
 
 
+thread(WIFIConnect, None)
+thread(btnMon, None)
+thread(serverMon, None)
 thread(escape_check, None)
 thread(alert_mode, None)
