@@ -97,11 +97,6 @@ def serverMon():
         sleep(2)
 
 
-<<<<<<< HEAD
-#thread(WIFIConnect, [])
-#thread(btnMon, [])
-#thread(serverMon, [])
-=======
 def lightMon():
     global led, ldr, laser
     while True:
@@ -121,6 +116,5 @@ def lightMon():
 thread(WIFIConnect, [])
 thread(btnMon, [])
 thread(serverMon, [])
->>>>>>> 67327445ec364e3308305cfd6ad6413995a8b675
 thread(escape_check, [])
 thread(alert_mode, [])
