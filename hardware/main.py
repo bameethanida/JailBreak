@@ -13,6 +13,7 @@ ALERTSTATUS = False
 def escape_check():
     global ALERTSTATUS
     pin_lazer = Pin(25)
+    pin_ldr = ADC(Pin(33))
     while(True):
         pin_lazer.value(1)
         if (pin_ldr.read() >= 2500):
@@ -94,5 +95,5 @@ def serverMon():
 thread(WIFIConnect, [])
 thread(btnMon, [])
 thread(serverMon, [])
-#thread(escape_check, [])
-#thread(alert_mode, [])
+thread(escape_check, [])
+thread(alert_mode, [])
