@@ -2,6 +2,7 @@ from machine import Pin, PWM, ADC
 from time import sleep
 import urequests as requests
 from _thread import start_new_thread as thread
+import pyb
 
 GATESTATUS = False
 DOORAPI = "https://abc.def/efg/door"
